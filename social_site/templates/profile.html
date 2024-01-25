@@ -1,0 +1,109 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile - {{user_profile.user.username}}</title>
+    <link rel="stylesheet" href="{% static 'assets/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/nav_bar.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<script>
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+</script>
+<body style="background: linear-gradient(1deg, black, transparent);">
+    <div class="topnav" id="myTopnav">
+        <div class="topnav-left">
+            <a>Social Media</a>
+        </div>
+        <a>
+            <div class="search-container">
+                <form action="/search" method="POST">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Search for username.." name="username">&nbsp; &nbsp;
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </a>
+        <a href="/logout" class="active">Log out</a>
+        <a href="/settings" class="active">Settings</a>
+        <a href="/profile/{{user.username}}" class="active">Profile</a>
+        <a href="/" class="active">Home</a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+    <header>
+        <div class="container">
+            <div class="profile">
+                <div class="profile-image">
+                    <img src="{{user_profile.profileimg.url}}" style="height: 100%; width: 60%;" alt="">
+                </div>
+                <div class="profile-user-settings">
+                    <h1 class="profile-user-name" style="align-items: center;"><b>{{user_profile.user.username}}</b>
+                    </h1>
+                    <br>
+                    <form action="/follow" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{user.username}}" name="follower" />
+                        <input type="hidden" value="{{user_object.username}}" name="user" />
+                        {% if user_object.username == user.username %}
+                        <button class="btn profile-edit-btn"
+                            style="background-color: #000000; border: #f7f4f4; width: 100%; color: #ffffff;"><a
+                                href="/settings" style="text-decoration: none; color: #ffffff;" data-ripple="">Edit
+                                Profile</a></button>
+                        {% else %}
+                        <button class="btn profile-edit-btn" type="submit"
+                            style="background-color: #4fee0c; border: #f7f4f4; width: 100%;"><a
+                                data-ripple="">{{button_text}}</a></button>
+                        {% endif %}
+                    </form>
+                </div>
+                <br>
+                <div class="profile-stats">
+                    <ul>
+                        {% if user_post_length == 0 %}
+                        <li><span class="profile-stat-count"></span>No Post</li>
+                        {% elif user_post_length == 1 %}
+                        <li><span class="profile-stat-count">{{user_post_length}}</span> Post</li>
+                        {% else %}
+                        <li><span class="profile-stat-count">{{user_post_length}}</span> Posts</li>
+                        {% endif %}
+
+                        {% if user_followers == 0 or user_followers == 1 %}
+                        <li><span class="profile-stat-count">{{user_followers}}</span> follower</li>
+                        {% else %}
+                        <li><span class="profile-stat-count">{{user_followers}}</span> followers</li>
+                        {% endif %}
+                        <li><span class="profile-stat-count">{{user_following}}</span> following</li>
+                    </ul>
+                </div>
+                <div class="profile-bio">
+                    <p><span class="profile-real-name">BIO: </span>{{user_profile.bio}} </p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="gallery">
+                {% for post in user_posts %}
+                <div class="gallery-item" tabindex="0">
+                    <a class="strip" href="{{post.image.url}}" title="" data-strip-group="mygroup"
+                        data-strip-group-options="loop: false"></a>
+                    <img src="{{post.image.url}}" class="gallery-image" alt="">
+                </div>
+                {% endfor %}
+            </div>
+            <div class="loader"></div>
+        </div>
+    </main>
+</body>
+</html>

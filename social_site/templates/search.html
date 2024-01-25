@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="favicon.png" rel="icon" type="image/png">
+    <title>Search</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'assets/search.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/nav_bar.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<script>
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+</script>
+<body style="background: linear-gradient(45deg, black, transparent);">
+    <div class="topnav" id="myTopnav">
+        <div class="topnav-left">
+            <a>Social Media</a>
+        </div>
+        <a>
+            <div class="search-container">
+                <form action="/search" method="POST">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Search for username.." name="username">&nbsp; &nbsp;
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </a>
+        <a href="/logout" class="active">Log out</a>
+        <a href="/settings" class="active">Settings</a>
+        <a href="/profile/{{user.username}}" class="active">Profile</a>
+        <a href="/" class="active">Home</a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+    <div style="margin-left: 20px; margin-right: 20px;">
+        <div class="container">
+            <div class="row ng-scope">
+                <div class="col-md-3 col-md-push-9">
+                    <h4>Results For <span class="fw-semi-bold"><b>{{username}}</b></span></h4>
+                    <br>
+                </div>
+                <div class="col-md-9 col-md-pull-3">
+                    {% for users in username_profile_list %}
+                    <section class="search-result-item">
+                        <a class="image-link" href="/profile/{{users.user}}"><img class="image"
+                                src="{{users.profileimg.url}}">
+                        </a>
+                        <div class="search-result-item-body">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h4 class="search-result-item-heading"><a
+                                            href="/profile/{{users.user}}"><b>@{{users.user}}</b></a></h4>
+                                    <p class="info">{{users.location}}</p>
+                                    <p class="description">{{users.bio}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</body>
+</html>

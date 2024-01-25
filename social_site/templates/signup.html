@@ -1,0 +1,92 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/style.css' %}">
+</head>
+<body style="background-color: rgb(173, 173, 182);">
+    <section class="main">
+        <div class="navigation">
+            <div class="brand">
+                <h1>Social Media</h1>
+            </div>
+            <div class="toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="nav-menu">
+                <div class="close">
+                    <i class="fas fa-window-close"></i>
+                </div>
+                <ul>
+                    <li><a href="/signup">Register</a></li>
+                    <li><a href="/signin">Login</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container">
+            <div class="form-cont">
+                <div class="inner-form">
+                    <div class="social-login">
+                        <span>Welcome Register here!</span>
+                    </div>
+                    <br>
+                    <div>
+                        <style>
+                            h5{
+                                color: red;
+                            }
+                        </style>
+                        {% for message in messages %}
+                        <h5>{{message}}</h5>
+                        {% endfor %}
+                    </div>
+                    <div class="input-area">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div>
+                                <input type="text" name="username" placeholder="Username">
+                            </div>
+                            <div>
+                                <input type="email" name="email" placeholder="Email">
+                            </div>
+                            <div>
+                                <input type="password" name="password" placeholder="Password">
+                            </div>
+                            <div>
+                                <input type="password" name="password2" placeholder="Confirm Password">
+                            </div>
+
+                            <button type="submit" class="btn">Register</button>
+                            <br>
+                            <span>Already have account? <br><a href="/signin">Login Here</a></span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        let toggler = document.querySelector('.toggle');
+        let menu = document.querySelector('.nav-menu');
+        let close = document.querySelector('.close');
+        toggler.addEventListener('click', () => {
+            menu.style.display = 'block';
+            console.log('clicked')
+        });
+        close.addEventListener('click', () => {
+            menu.style.display = '';
+            cons
+        });
+    </script>
+    <div class="footer">
+        <ul>
+            <li>Copyright 2023</li>
+        </ul>
+    </div>
+</body>
+</html>

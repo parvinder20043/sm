@@ -1,0 +1,90 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Account Settings</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/setting.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/nav_bar.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<script>
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+</script>
+<body style="background: linear-gradient(45deg, black, transparent);">
+    <div class="topnav" id="myTopnav">
+        <div class="topnav-left">
+            <a>Social Media</a>
+        </div>
+        <a>
+            <div class="search-container">
+                <form action="/search" method="POST">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Search for username.." name="username">&nbsp; &nbsp;
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </a>
+        <a href="/logout" class="active">Log out</a>
+        <a href="/settings" class="active">Settings</a>
+        <a href="/profile/{{user.username}}" class="active">Profile</a>
+        <a href="/" class="active">Home</a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+    <div class="wrapper bg-white mt-sm-5">
+        <h4 class="pb-4 border-bottom">Account settings for <b>{{user.username}}</h4>
+        <br>
+        <br>
+        <div class="d-flex align-items-start py-3 border-bottom">
+            <img src="{{user_profile.profileimg.url}}" class="img" alt="">
+            <div class="pl-sm-4 pl-2" id="img-section">
+            </div>
+        </div>
+        <br>
+        <div class="container">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-25">
+                        <label for="about">Profile Picture</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="file" name="image" value="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="about">Bio</label>
+                    </div>
+                    <div class="col-75">
+                        <textarea id="about" name="bio" placeholder="Your Bio..">{{user_profile.bio}}</textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="">Location</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" name="location" value="{{user_profile.location}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
